@@ -49,4 +49,13 @@ model.compile(optimizer='adam',
 model.fit(train_generator, validation_data=val_generator, epochs=3)
 
 
+class_names = ["Carton", "Vidrio", "Metal", "Papel", "Plastico", "Otros"]
+
+def predict_image(img_path):
+    img = tf.keras.preprocessing.image.load_img(img_path, target_size=(160, 160))
+    img_array = tf.keras.preprocessing.image.img_to_array(img) / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
+    predictions = model.predict(img_array)
+    return np.argmax(predictions[0])
+
 
