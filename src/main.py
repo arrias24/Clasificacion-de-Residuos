@@ -58,4 +58,27 @@ def predict_image(img_path):
     predictions = model.predict(img_array)
     return np.argmax(predictions[0])
 
+def load_image():
+    file_path = filedialog.askopenfilename()
+    if file_path:
+        img = Image.open(file_path)
+        img.thumbnail((300, 300))
+        img_tk = ImageTk.PhotoImage(img)
+        panel.config(image=img_tk)
+        panel.image = img_tk
+        class_index = predict_image(file_path)
+        result_label.config(text=f'Tipo de Residuo: {class_names[class_index]}')
 
+root = tk.Tk()
+root.title("Clasificador de Residuos")
+
+panel = tk.Label(root)
+panel.pack(pady=20)
+
+load_button = tk.Button(root, text="Cargar Imagen", command=load_image)
+load_button.pack(pady=20)
+
+result_label = tk.Label(root, text="")
+result_label.pack(pady=20)
+
+root.mainloop()
