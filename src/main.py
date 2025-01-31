@@ -8,16 +8,12 @@ import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk
 
-# Preparamos los datos
-
 dir_dataset = "dataset-resized"
 
 datagen = ImageDataGenerator(
     rescale=1.0/255.0,
     validation_split=0.2
 )
-
-# Generamos los datos
 
 train_generator = datagen.flow_from_directory(
     dir_dataset,
@@ -35,4 +31,14 @@ val_generator = datagen.flow_from_directory(
     subset='validation'
 )
 
+base_model = MobileNetV2(input_shape=(160, 160, 3), include_top=False, weights='imagenet')
+base_model.trainable = False
+
+model = models.Sequential([
+    base_model,
+    layers.GlobalAveragePooling2D(),
+    layers.Dense(100, activation='relu'), 
+    layers.Dropout(0.3),
+    layers.Dense(6, activation='softmax')
+])
 
