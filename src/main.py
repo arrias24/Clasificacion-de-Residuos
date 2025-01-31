@@ -42,3 +42,11 @@ model = models.Sequential([
     layers.Dense(6, activation='softmax')
 ])
 
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+model.fit(train_generator, validation_data=val_generator, epochs=3)
+
+
+
